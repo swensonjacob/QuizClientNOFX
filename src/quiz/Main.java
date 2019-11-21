@@ -3,8 +3,12 @@ package quiz;
 public class Main {
 
     public static void main(String[] args) {
-        Thread t = new Thread(new QuestionGetter());
-        t.start();
+
+        ServerHandler serverHandler = new ServerHandler();
+        Gui gui = new Gui(serverHandler);
+        serverHandler.setGui(gui);
+
+        new Thread(serverHandler).start();
     }
 }
 
