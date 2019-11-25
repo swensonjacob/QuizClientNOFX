@@ -18,7 +18,7 @@ public class ServerHandler implements Runnable{
     @Override
     public void run() {
 
-        try(Socket socket = new Socket("localhost",8081)) {
+        try(Socket socket = new Socket("localhost",5989)) {
 
             writer = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream serverReader = new ObjectInputStream(socket.getInputStream());
@@ -39,13 +39,10 @@ public class ServerHandler implements Runnable{
                     System.out.println(question.getAnswerThree());
                     System.out.println(question.getAnswerCorrect());
                     gui.setQuestionPanel();
-
-                   /* fromUser = userReader.readLine();
-                    if (fromUser != null) {
-                       writeStringToServer(fromUser);
-                    }
-
-                   */
+//                    fromUser = userReader.readLine();
+//                    if (fromUser != null) {
+//                        writeStringToServer(fromUser);
+//                    }
                 } else if (serverInput instanceof String) {
                     gui.setInfoPanel(serverInput.toString());
                     System.out.println("String received: "+serverInput);
@@ -79,7 +76,16 @@ public class ServerHandler implements Runnable{
                     gui.setCategoryPanel(categoryList.get(0).toString(),categoryList.get(1).toString(),
                             categoryList.get(2).toString(),categoryList.get(3).toString());
 
-            }
+            } else if (serverInput instanceof ScoreBoard) {
+                    ScoreBoard scoreBoard = (ScoreBoard) serverInput;
+                    gui.setRoundPointPanel();
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
             }
         } catch (Exception e) {
             System.out.println("IOException: " + e.getMessage());
