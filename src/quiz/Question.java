@@ -39,4 +39,6 @@ public class Question implements Serializable {
     public String getAnswerCorrect() {
         return answerCorrect;
     }
+
 }
+

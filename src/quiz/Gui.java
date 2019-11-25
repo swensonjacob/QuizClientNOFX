@@ -19,10 +19,12 @@ public class Gui extends JFrame implements ActionListener {
     private List<JButton> answerButtons;
     private List<JButton> categoryButtons;
 
+
     private JLabel infoText = createLabel("Väntar på att en motståndare ska ansluta...");
     private JLabel questionText = createLabel("questiontext");
     private ServerHandler serverHandler;
     private Question currentQuestion;
+
 
 
     public Gui(ServerHandler serverHandler) {
@@ -41,7 +43,6 @@ public class Gui extends JFrame implements ActionListener {
         mainPanel.add(infoPanel, "info");
         mainPanel.add(game, "game");
         mainPanel.add(category,"category");
-
         //loadingPanel
         JPanel loadingPanel = createPanel();
         loadingPanel.setLayout(new GridLayout(2,1));
@@ -149,6 +150,7 @@ public class Gui extends JFrame implements ActionListener {
 
     public void updateQuestion(Question question) {
         this.currentQuestion=question;
+
     }
 
 }
