@@ -141,12 +141,19 @@ public class Gui extends JFrame implements ActionListener {
 
             for (JButton categoryButton:categoryButtons ) {
                 if (e.getSource() == categoryButton) {
+                    categoryButton.setBackground(new Color(198, 187, 171));
                     serverHandler.sendCategory(categoryButton.getText());
                 }
             }
                 for (JButton answerButton:answerButtons ) {
                     if (e.getSource() == answerButton) {
+                        if(!answerButton.getText().equals(currentQuestion.getAnswerCorrect())) {
+                            answerButton.setBackground(new Color(255, 133, 140));
+                        }
                     isCorrectAnswer(answerButton);
+                    }
+                    if (answerButton.getText().equals(currentQuestion.getAnswerCorrect())) {
+                        answerButton.setBackground(new Color(148, 255, 170));
                     }
                 }
         } catch(Exception ea) {
@@ -193,8 +200,16 @@ public class Gui extends JFrame implements ActionListener {
         cardLayout.show(mainPanel,"totalPoint");
     }
 
+    public void resetButtonBackground() {
+        for (JButton button: this.answerButtons) {
+            button.setBackground(Color.WHITE);
+        }
+    }
+
     public void updateQuestion(Question question) {
         this.currentQuestion=question;
+        setQuestionPanel();
+        resetButtonBackground();
     }
 
 }

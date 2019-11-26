@@ -31,19 +31,12 @@ public class ServerHandler implements Runnable{
             while ((serverInput = serverReader.readObject()) != null) {
 
                 if (serverInput instanceof Question) {
+                    Thread.sleep(1500);
                     Question question = (Question) serverInput;
                     gui.updateQuestion(question);
-                    System.out.println(question.getQuestionText());
-                    System.out.println(question.getAnswerOne());
-                    System.out.println(question.getAnswerTwo());
-                    System.out.println(question.getAnswerThree());
-                    System.out.println(question.getAnswerCorrect());
-                    gui.setQuestionPanel();
-//                    fromUser = userReader.readLine();
-//                    if (fromUser != null) {
-//                        writeStringToServer(fromUser);
-//                    }
+
                 } else if (serverInput instanceof String) {
+                    Thread.sleep(1500);
                     gui.setInfoPanel(serverInput.toString());
                     System.out.println("String received: "+serverInput);
 
@@ -77,10 +70,11 @@ public class ServerHandler implements Runnable{
                             categoryList.get(2).toString(),categoryList.get(3).toString());
 
             } else if (serverInput instanceof ScoreBoard) {
+                    Thread.sleep(1500);
                     ScoreBoard scoreBoard = (ScoreBoard) serverInput;
                     gui.setRoundPointPanel();
                     try {
-                        Thread.sleep(5000);
+                        Thread.sleep(4000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
