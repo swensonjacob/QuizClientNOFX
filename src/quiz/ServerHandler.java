@@ -10,6 +10,7 @@ public class ServerHandler implements Runnable{
     ObjectOutputStream writer;
     Gui gui;
     List<CategoryName> categoryList;
+    Socket socket;
 
     public void setGui(Gui gui) {
         this.gui = gui;
@@ -18,8 +19,8 @@ public class ServerHandler implements Runnable{
     @Override
     public void run() {
 
-        try(Socket socket = new Socket("localhost",5989)) {
-
+        try {
+            socket = new Socket("localhost",5989);
             writer = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream serverReader = new ObjectInputStream(socket.getInputStream());
 
@@ -44,6 +45,11 @@ public class ServerHandler implements Runnable{
 
 
                      */
+                    if (((String) serverInput).equalsIgnoreCase("GETTUPP")){
+                        gui.setInfoPanel("Du vann! Din motståndare har gett upp");
+                        gui.revalidate();
+                        gui.repaint();
+                    }
 
                     if (((String) serverInput).contains("Lika")  ||((String) serverInput).contains("Du förlorade")){ // den som vinner får chansen bli frågad om hen vill förtäta spela eller inte.
                         //och om de är lika bådde blir frågade bestäma.
@@ -58,6 +64,9 @@ public class ServerHandler implements Runnable{
 
 
 
+
+                    }if (((String)serverInput).equalsIgnoreCase("GETTUPP")){
+                        gui.setInfoPanel("Du vann! Din motståndare har gett upp.");
                     }
             } else if (serverInput instanceof List<?>) {
                     categoryList = (List<CategoryName>) serverInput;
@@ -106,5 +115,7 @@ public class ServerHandler implements Runnable{
 
             }
         }
+    }public void disconnect() throws IOException {
+        socket.close();
     }
 }
