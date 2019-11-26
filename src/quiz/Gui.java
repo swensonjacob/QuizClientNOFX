@@ -28,7 +28,7 @@ public class Gui extends JFrame implements ActionListener {
     private JLabel totalPointLabel = createPointLabel("3 - 0");
     private ServerHandler serverHandler;
     private Question currentQuestion;
-    private JButton giveUpButton = new JButton("Ge upp och avsluta");
+    private JButton giveUpButton = createButton("Ge upp och avsluta");
 
 
     public Gui(ServerHandler serverHandler) {
@@ -83,6 +83,8 @@ public class Gui extends JFrame implements ActionListener {
         game.add(questionText, BorderLayout.CENTER);
         game.add(giveUpButton, BorderLayout.BEFORE_FIRST_LINE);
         giveUpButton.addActionListener(this::actionPerformed);
+
+
 
 
         //categoryButtonsPanel

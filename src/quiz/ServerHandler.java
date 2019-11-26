@@ -49,6 +49,8 @@ public class ServerHandler implements Runnable{
                         gui.setInfoPanel("Du vann! Din motståndare har gett upp");
                         gui.revalidate();
                         gui.repaint();
+                        Thread.sleep(10000);
+                        System.exit(0);
                     }
 
                     if (((String) serverInput).contains("Lika")  ||((String) serverInput).contains("Du förlorade")){ // den som vinner får chansen bli frågad om hen vill förtäta spela eller inte.
