@@ -35,28 +35,14 @@ public class ServerHandler implements Runnable{
                 } else if (serverInput instanceof String) {
                     Thread.sleep(500);
                     gui.setInfoPanel(serverInput.toString());
-                    System.out.println("String received: "+serverInput);
 
-                    /*den frågar om  spelaren vill spela igen eller inte.
-
-
-                     */
                     if (((String) serverInput).equalsIgnoreCase("GETTUPP")){
-                        gui.setInfoPanel("Du vann! Din motståndare har gett upp");
-                        gui.revalidate();
-                        gui.repaint();
-                        Thread.sleep(10000);
-                        System.exit(0);
+                        gui.setInfoPanel("Du vann! Din motståndare har gett upp, ett nytt spel kommer att startas");
+                        Thread.sleep(5000);
+                        Main.runner();
+                        gui.dispose();
                     }
 
-                    if (((String) serverInput).contains("Lika")  ||((String) serverInput).contains("Du förlorade")){ // den som vinner får chansen bli frågad om hen vill förtäta spela eller inte.
-                        //och om de är lika bådde blir frågade bestäma.
-
-
-                } else if (serverInput instanceof List<?>) {
-                    }if (((String)serverInput).equalsIgnoreCase("GETTUPP")){
-                        gui.setInfoPanel("Du vann! Din motståndare har gett upp.");
-                    }
             } else if (serverInput instanceof List<?>) {
                     categoryList = (List<CategoryName>) serverInput;
                     gui.setCategoryPanel(categoryList);
@@ -70,11 +56,11 @@ public class ServerHandler implements Runnable{
                         int result = JOptionPane.showConfirmDialog(new JFrame(),
                                 "Vill du spela igen?", "tryck Ja eller Nej",
                                 JOptionPane.YES_NO_OPTION);
-                                gui.dispose();
                         if (result == JOptionPane.YES_OPTION) {
                             Main.runner();
                         } else if (result == JOptionPane.NO_OPTION) {
                             System.exit(0);
+                            gui.dispose();
                         }
                     } else {
                         gui.setRoundPointPanel(scoreBoard);
