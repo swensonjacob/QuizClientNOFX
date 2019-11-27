@@ -22,10 +22,10 @@ public class Gui extends JFrame implements ActionListener {
 
     private JLabel infoText = createLabel("Väntar på att en motståndare ska ansluta...");
     private JLabel questionText = createLabel("questiontext");
-    private JLabel roundTextLabel = createLabel("Runda 1");
-    private JLabel totalTextLabel = createLabel("Total Poäng");
-    private JLabel roundPointLabel = createPointLabel("2 - 2");
-    private JLabel totalPointLabel = createPointLabel("3 - 0");
+    private JLabel roundTextLabel = createLabel("Runda 0");
+    private JLabel winOrLoseLabel = createLabel("Lika");
+    private JLabel roundPointLabel = createPointLabel("0 - 0");
+    private JLabel totalPointLabel = createPointLabel("0 - 0");
     private ServerHandler serverHandler;
     private Question currentQuestion;
 
@@ -121,6 +121,8 @@ public class Gui extends JFrame implements ActionListener {
         playerPanel2.add(createLabel("Din Poäng"));
         playerPanel2.add(createLabel("Motståndarens Poäng"));
         scorePanel2.setLayout(new BoxLayout(scorePanel2,BoxLayout.Y_AXIS));
+        JLabel totalTextLabel = createLabel("Total Poäng");
+        scorePanel2.add(winOrLoseLabel);
         scorePanel2.add(totalTextLabel);
         scorePanel2.add(playerPanel2);
         scorePanel2.add(totalPointLabel);
@@ -179,12 +181,13 @@ public class Gui extends JFrame implements ActionListener {
         cardLayout.show(mainPanel, "game");
     }
 
-    public void setCategoryPanel(String category1text,String category2text,String category3text,String category4text) {
-        categoryButtons.get(0).setText(category1text);
-        categoryButtons.get(1).setText(category2text);
-        categoryButtons.get(2).setText(category3text);
-        categoryButtons.get(3).setText(category4text);
+    public void setCategoryPanel(List<CategoryName> categoryList) {
+
+        for (int i = 0; i < categoryButtons.size(); i++) {
+            categoryButtons.get(i).setText(capitalize(categoryList.get(i).toString().toLowerCase()));
+        }
         cardLayout.show(mainPanel, "category");
+        resetButtonBackground(categoryButtons);
     }
 
     public void setInfoPanel(String text) {
@@ -192,24 +195,35 @@ public class Gui extends JFrame implements ActionListener {
         cardLayout.show(mainPanel, "info");
     }
 
-    public void setRoundPointPanel() {
+    public void setRoundPointPanel(ScoreBoard scoreBoard) {
+        roundTextLabel.setText("Runda " + scoreBoard.getCurrentRound());
+        roundPointLabel.setText(scoreBoard.getPlayerScore().get(0) + " - " + scoreBoard.getOpponentScore().get(0));
         cardLayout.show(mainPanel,"roundPoint");
     }
 
-    public void setTotalPointPanel() {
+    public void setTotalPointPanel(ScoreBoard scoreBoard) {
+        totalPointLabel.setText(scoreBoard.getTotalScorePlayer() + " - " + scoreBoard.getTotalScoreOpponent());
+        if (scoreBoard.getTotalScorePlayer()>scoreBoard.getTotalScoreOpponent()) {
+            winOrLoseLabel.setText("Du vann!");
+        } else if(scoreBoard.getTotalScorePlayer()<scoreBoard.getTotalScoreOpponent()){
+            winOrLoseLabel.setText("Du Förlorade");
+        }
         cardLayout.show(mainPanel,"totalPoint");
     }
 
-    public void resetButtonBackground() {
-        for (JButton button: this.answerButtons) {
+    public void resetButtonBackground(List<JButton> buttons) {
+        for (JButton button: buttons) {
             button.setBackground(Color.WHITE);
         }
     }
 
     public void updateQuestion(Question question) {
         this.currentQuestion=question;
+        resetButtonBackground(this.answerButtons);
         setQuestionPanel();
-        resetButtonBackground();
-    }
 
+    }
+    private String capitalize(String text) {
+        return text.substring(0, 1).toUpperCase() + text.substring(1);
+    }
 }

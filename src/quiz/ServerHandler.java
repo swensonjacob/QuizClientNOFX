@@ -7,9 +7,9 @@ import java.util.List;
 
 public class ServerHandler implements Runnable{
 
-    ObjectOutputStream writer;
-    Gui gui;
-    List<CategoryName> categoryList;
+    private ObjectOutputStream writer;
+    private Gui gui;
+    private List<CategoryName> categoryList;
 
     public void setGui(Gui gui) {
         this.gui = gui;
@@ -23,61 +23,43 @@ public class ServerHandler implements Runnable{
             writer = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream serverReader = new ObjectInputStream(socket.getInputStream());
 
-            String fromUser;
-            BufferedReader userReader = new BufferedReader(new InputStreamReader(System.in));
-
             Object serverInput;
 
             while ((serverInput = serverReader.readObject()) != null) {
 
                 if (serverInput instanceof Question) {
-                    Thread.sleep(1500);
+                    Thread.sleep(500);
                     Question question = (Question) serverInput;
                     gui.updateQuestion(question);
 
                 } else if (serverInput instanceof String) {
-                    Thread.sleep(1500);
+                    Thread.sleep(500);
                     gui.setInfoPanel(serverInput.toString());
-                    System.out.println("String received: "+serverInput);
-
-                    /*den frågar om  spelaren vill spela igen eller inte.
 
 
-                     */
-
-                    if (((String) serverInput).contains("Lika")  ||((String) serverInput).contains("Du förlorade")){ // den som vinner får chansen bli frågad om hen vill förtäta spela eller inte.
-                        //och om de är lika bådde blir frågade bestäma.
-
-                        String userInput = JOptionPane.showInputDialog(null, "vill du spela igen?, svara ja eller nej");
-                        if(userInput.equalsIgnoreCase("ja")){
-                            gui.dispose();
-                            Main.runner();
-                        }else{
-                            gui.dispose();
-                        }
-
-
-
-                    }
-            } else if (serverInput instanceof List<?>) {
+                } else if (serverInput instanceof List<?>) {
                     categoryList = (List<CategoryName>) serverInput;
-                    System.out.println("Välj kategori");
-                    System.out.println(categoryList.get(0));
-                    System.out.println(categoryList.get(1));
-                    System.out.println(categoryList.get(2));
-                    System.out.println(categoryList.get(3));
-                    gui.setCategoryPanel(categoryList.get(0).toString(),categoryList.get(1).toString(),
-                            categoryList.get(2).toString(),categoryList.get(3).toString());
+                    gui.setCategoryPanel(categoryList);
 
-            } else if (serverInput instanceof ScoreBoard) {
-                    Thread.sleep(1500);
+                } else if (serverInput instanceof ScoreBoard) {
                     ScoreBoard scoreBoard = (ScoreBoard) serverInput;
-                    gui.setRoundPointPanel();
-                    try {
-                        Thread.sleep(4000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                    Thread.sleep(500);
+                    if (scoreBoard.isLastRound()) {
+                        gui.setTotalPointPanel(scoreBoard);
+
+                        int result = JOptionPane.showConfirmDialog(new JFrame(),
+                                "Vill du spela igen?", "tryck Ja eller Nej",
+                                JOptionPane.YES_NO_OPTION);
+                                gui.dispose();
+                        if (result == JOptionPane.YES_OPTION) {
+                            Main.runner();
+                        } else if (result == JOptionPane.NO_OPTION) {
+                            System.exit(0);
+                        }
+                    } else {
+                        gui.setRoundPointPanel(scoreBoard);
                     }
+                    Thread.sleep(4000);
                 }
 
             }
@@ -86,6 +68,7 @@ public class ServerHandler implements Runnable{
             e.printStackTrace();
         }
     }
+
     public void writeStringToServer(String text) {
         try {
             writer.writeObject(text);
@@ -94,6 +77,7 @@ public class ServerHandler implements Runnable{
         }
 
     }
+
     public void sendCategory(String category) {
 
         for (CategoryName categoryName:categoryList) {
