@@ -1,7 +1,5 @@
 package quiz;
 
-import javax.swing.*;
-
 public class Main {
 
 public static void runner(){
