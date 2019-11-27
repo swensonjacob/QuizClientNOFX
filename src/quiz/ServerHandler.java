@@ -58,9 +58,9 @@ public class ServerHandler implements Runnable{
                                 JOptionPane.YES_NO_OPTION);
                         if (result == JOptionPane.YES_OPTION) {
                             Main.runner();
+                            gui.dispose();
                         } else if (result == JOptionPane.NO_OPTION) {
                             System.exit(0);
-                            gui.dispose();
                         }
                     } else {
                         gui.setRoundPointPanel(scoreBoard);
