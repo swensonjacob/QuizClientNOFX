@@ -7,7 +7,8 @@ public enum CategoryName implements Serializable {
     INREDNING,
     MUSIK,
     TV,
-    SPORT
+    SPORT,
+    FILM
 }
 
 

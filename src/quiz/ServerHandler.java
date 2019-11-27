@@ -62,9 +62,6 @@ public class ServerHandler implements Runnable{
                             gui.dispose();
                         }
 
-
-
-
                     }if (((String)serverInput).equalsIgnoreCase("GETTUPP")){
                         gui.setInfoPanel("Du vann! Din motståndare har gett upp.");
                     }
