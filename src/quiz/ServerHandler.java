@@ -10,7 +10,6 @@ public class ServerHandler implements Runnable{
     ObjectOutputStream writer;
     Gui gui;
     List<CategoryName> categoryList;
-    Socket socket;
 
     public void setGui(Gui gui) {
         this.gui = gui;
@@ -19,8 +18,7 @@ public class ServerHandler implements Runnable{
     @Override
     public void run() {
 
-        try {
-            socket = new Socket("localhost",5989);
+        try  (Socket socket = new Socket("localhost",5989)){
             writer = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream serverReader = new ObjectInputStream(socket.getInputStream());
 
@@ -117,7 +115,5 @@ public class ServerHandler implements Runnable{
 
             }
         }
-    }public void disconnect() throws IOException {
-        socket.close();
     }
 }

@@ -172,7 +172,6 @@ public class Gui extends JFrame implements ActionListener {
             }
             if (e.getSource() == giveUpButton) {
                 serverHandler.writeStringToServer("GETTUPP");
-                serverHandler.disconnect();
                 System.exit(0);
 
 
