@@ -75,15 +75,22 @@ public class Gui extends JFrame implements ActionListener {
             button.addActionListener(this);
         });
 
+        //gameTopPanel
+        JPanel gameTopPanel = createPanel();
+        gameTopPanel.setLayout(new BorderLayout());
+        gameTopPanel.add(giveUpButton, BorderLayout.NORTH);
+        gameTopPanel.add(createLogo(), BorderLayout.SOUTH);
+        giveUpButton.addActionListener(this::actionPerformed);
+        giveUpButton.setPreferredSize(new Dimension(30,25));
+
         //gamePanel
         questionText.setVerticalAlignment(JLabel.CENTER);
         game.setLayout(new BorderLayout());
-        game.add(createLogo(), BorderLayout.NORTH);
+
         game.add(gameButtonsPanel, BorderLayout.SOUTH);
         game.add(questionText, BorderLayout.CENTER);
-        game.add(giveUpButton, BorderLayout.BEFORE_FIRST_LINE);
-        giveUpButton.addActionListener(this::actionPerformed);
-        giveUpButton.setPreferredSize(new Dimension(30,25));
+        game.add(gameTopPanel, BorderLayout.NORTH);
+
 
 
 
